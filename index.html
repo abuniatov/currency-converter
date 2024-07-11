@@ -1,14 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    
-    <script src="js/script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Currency Converter</h1>
+      <!-- Form for inserting a new currency rate -->
+      <div class="form-container">
+        <form id="newRateForm">
+          <h2>Insert New Currency Rate</h2>
+          <label for="baseCurrency">Base Currency:</label>
+          <input type="text" id="baseCurrency" name="baseCurrency" required />
+          <label for="targetCurrency">Target Currency:</label>
+          <input
+            type="text"
+            id="targetCurrency"
+            name="targetCurrency"
+            required
+          />
+          <label for="rate">Rate:</label>
+          <input type="number" step="0.1" id="rate" name="rate" required />
+          <button type="button" onclick="insertRate()">Insert Rate</button>
+        </form>
+      </div>
+      <!-- Form for converting currency based on existing rates -->
+      <div class="form-container">
+        <form id="convertForm">
+          <h2>Convert Currency</h2>
+          <label for="amount">Amount:</label>
+          <input type="number" step="0.1" id="amount" name="amount" required />
+          <label for="fromCurrency">From Currency:</label>
+          <input type="text" id="fromCurrency" name="fromCurrency" required />
+          <label for="toCurrency">To Currency:</label>
+          <input type="text" id="toCurrency" name="toCurrency" required />
+          <button type="button" onclick="convertCurrency()">Convert</button>
+        </form>
+        <!-- Display conversion result -->
+        <p id="conversionResult"></p>
+      </div>
+      <!-- Form for updating existing currency conversion rates -->
+      <div class="form-container">
+        <form id="updateRateForm">
+          <h2>Update Existing Currency Rate</h2>
+          <label for="updateBaseCurrency">Base Currency:</label>
+          <input
+            type="text"
+            id="updateBaseCurrency"
+            name="updateBaseCurrency"
+            required
+          />
+          <label for="updateTargetCurrency">Target Currency:</label>
+          <input
+            type="text"
+            id="updateTargetCurrency"
+            name="updateTargetCurrency"
+            required
+          />
+          <label for="newRate">New Rate:</label>
+          <input
+            type="number"
+            step="0.1"
+            id="newRate"
+            name="newRate"
+            required
+          />
+          <button type="button" onclick="updateRate()">Update Rate</button>
+        </form>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
