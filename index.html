@@ -24,7 +24,7 @@
           />
           <label for="rate">Rate:</label>
           <input type="number" step="0.1" id="rate" name="rate" required />
-          <button type="button" onclick="insertRate()">Insert Rate</button>
+          <button type="submit">Insert Rate</button>
         </form>
       </div>
       <!-- Form for converting currency based on existing rates -->
@@ -37,7 +37,7 @@
           <input type="text" id="fromCurrency" name="fromCurrency" required />
           <label for="toCurrency">To Currency:</label>
           <input type="text" id="toCurrency" name="toCurrency" required />
-          <button type="button" onclick="convertCurrency()">Convert</button>
+          <button type="submit">Convert</button>
         </form>
         <!-- Display conversion result -->
         <p id="conversionResult"></p>
@@ -68,7 +68,7 @@
             name="newRate"
             required
           />
-          <button type="button" onclick="updateRate()">Update Rate</button>
+          <button type="submit">Update Rate</button>
         </form>
       </div>
     </div>
