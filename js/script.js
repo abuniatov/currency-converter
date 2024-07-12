@@ -9,7 +9,8 @@ const currencyRates = {
 };
 
 // Function to insert a new currency rate (Base and Target)
-const insertRate = () => {
+const insertRate = (event) => {
+  event.preventDefault();
   const baseCurrency = document
     .getElementById("baseCurrency")
     .value.toUpperCase();
@@ -36,7 +37,8 @@ const insertRate = () => {
 };
 
 // Function to convert a currency (From and To)
-const convertCurrency = () => {
+const convertCurrency = (event) => {
+  event.preventDefault();
   const amount = parseFloat(document.getElementById("amount").value);
   const fromCurrency = document
     .getElementById("fromCurrency")
@@ -79,7 +81,8 @@ const convertCurrency = () => {
 };
 
 // Function to update an existing currency rate
-const updateRate = () => {
+const updateRate = (event) => {
+  event.preventDefault();
   const baseCurrency = document
     .getElementById("updateBaseCurrency")
     .value.toUpperCase();
@@ -106,3 +109,11 @@ const updateRate = () => {
     alert("Rate not found for the specified currencies.");
   }
 };
+
+document.getElementById("newRateForm").addEventListener("submit", insertRate);
+document
+  .getElementById("convertForm")
+  .addEventListener("submit", convertCurrency);
+document
+  .getElementById("updateRateForm")
+  .addEventListener("submit", updateRate);
