@@ -17,7 +17,7 @@ const insertRate = (event) => {
   const targetCurrency = document
     .getElementById("targetCurrency")
     .value.toUpperCase();
-  const rate = parseFloat(document.getElementById("rate").value);
+  const rate = parseFloat(document.getElementById("rate").value.trim());
 
   // Validation
   if (!baseCurrency || !targetCurrency || isNaN(rate)) {
@@ -39,11 +39,15 @@ const insertRate = (event) => {
 // Function to convert a currency (From and To)
 const convertCurrency = (event) => {
   event.preventDefault();
-  const amount = parseFloat(document.getElementById("amount").value);
+  const amount = parseFloat(document.getElementById("amount").value.trim());
   const fromCurrency = document
     .getElementById("fromCurrency")
-    .value.toUpperCase();
-  const toCurrency = document.getElementById("toCurrency").value.toUpperCase();
+    .value.toUpperCase()
+    .trim();
+  const toCurrency = document
+    .getElementById("toCurrency")
+    .value.toUpperCase()
+    .trim();
 
   // Validation
   if (isNaN(amount) || !fromCurrency || !toCurrency) {
@@ -85,11 +89,13 @@ const updateRate = (event) => {
   event.preventDefault();
   const baseCurrency = document
     .getElementById("updateBaseCurrency")
-    .value.toUpperCase();
+    .value.toUpperCase()
+    .trim();
   const targetCurrency = document
     .getElementById("updateTargetCurrency")
-    .value.toUpperCase();
-  const newRate = parseFloat(document.getElementById("newRate").value);
+    .value.toUpperCase()
+    .trim();
+  const newRate = parseFloat(document.getElementById("newRate").value.trim());
 
   // Validation
   if (!baseCurrency || !targetCurrency || isNaN(newRate)) {
