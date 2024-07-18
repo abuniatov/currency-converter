@@ -101,32 +101,58 @@ const convertCurrency = (event) => {
   }
 
   // Conversion
-  if (
-    currencyRates.rates[fromCurrency] &&
-    currencyRates.rates[fromCurrency][toCurrency]
-  ) {
-    const rate = currencyRates.rates[fromCurrency][toCurrency];
-    const convertedAmount = amount * rate;
-    document.getElementById(
-      "conversionResult"
-    ).textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(
-      2
-    )} ${toCurrency}`;
-    console.log("Conversion performed:");
-    console.log({
-      amount: amount,
-      fromCurrency: fromCurrency,
-      toCurrency: toCurrency,
-      convertedAmount: convertedAmount.toFixed(2),
-    });
-  } else {
-    document.getElementById("conversionResult").textContent =
-      "Rate not found for the specified conversion.";
-    console.log(
-      "Conversion error: Rate not found for",
-      `${fromCurrency} to ${toCurrency}`
-    );
-  }
+//   if (
+//     currencyRates.rates[fromCurrency] &&
+//     currencyRates.rates[fromCurrency][toCurrency]
+//   ) {
+//     const rate = currencyRates.rates[fromCurrency][toCurrency];
+//     const convertedAmount = amount * rate;
+//     document.getElementById(
+//       "conversionResult"
+//     ).textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(
+//       2
+//     )} ${toCurrency}`;
+//     console.log("Conversion performed:");
+//     console.log({
+//       amount: amount,
+//       fromCurrency: fromCurrency,
+//       toCurrency: toCurrency,
+//       convertedAmount: convertedAmount.toFixed(2),
+//     });
+//   } else {
+//     document.getElementById("conversionResult").textContent =
+//       "Rate not found for the specified conversion.";
+//     console.log(
+//       "Conversion error: Rate not found for",
+//       `${fromCurrency} to ${toCurrency}`
+//     );
+//   }
+// };
+
+// Find the rate for conversion
+const rate = findRate(fromCurrency, toCurrency);
+if (rate) {
+  const convertedAmount = amount * rate.rate;
+  document.getElementById(
+    "conversionResult"
+  ).textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(
+    2
+  )} ${toCurrency}`;
+  console.log("Conversion performed:");
+  console.log({
+    amount: amount,
+    fromCurrency: fromCurrency,
+    toCurrency: toCurrency,
+    convertedAmount: convertedAmount.toFixed(2),
+  });
+} else {
+  document.getElementById("conversionResult").textContent =
+    "Rate for the specified conversion not found.";
+  console.log(
+    "Conversion error: Rate not found for",
+    `${fromCurrency} to ${toCurrency}`
+  );
+}
 };
 
 // Function to update an existing currency rate
