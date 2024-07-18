@@ -1,11 +1,21 @@
 "use strict";
 
 // Global object to store currency rates
-const currencyRates = {
-  timestamp: Date.now(),
-  base: "EUR",
-  date: new Date().toISOString().split("T")[0],
-  rates: {},
+// const currencyRates = {
+//   timestamp: Date.now(),
+//   base: "EUR",
+//   date: new Date().toISOString().split("T")[0],
+//   rates: {},
+// };
+
+// Global array to store currency rates
+const currencyRates = [];
+
+// Function to find a rate
+const findRate = (base, target) => {
+  return currencyRates.find(
+    (rate) => rate.base === base && rate.target === target
+  );
 };
 
 // Function to insert a new currency rate (Base and Target)
