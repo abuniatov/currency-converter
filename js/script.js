@@ -51,8 +51,15 @@ const insertRate = (event) => {
   }
 
   // Initialization of an object for baseCurrency if it does not exist
-  if (!currencyRates.rates[baseCurrency]) {
-    currencyRates.rates[baseCurrency] = {};
+  // if (!currencyRates.rates[baseCurrency]) {
+  //   currencyRates.rates[baseCurrency] = {};
+  // }
+
+  // Check if the rate already exists
+  const existingRate = findRate(baseCurrency, targetCurrency);
+  if (existingRate) {
+    alert("Rate already exists. Please use the update form to modify it.");
+    return;
   }
 
   // Set the rate for the target currency within the base currency object
