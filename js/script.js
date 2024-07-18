@@ -63,9 +63,22 @@ const insertRate = (event) => {
   }
 
   // Set the rate for the target currency within the base currency object
-  currencyRates.rates[baseCurrency][targetCurrency] = rate;
+  //   currencyRates.rates[baseCurrency][targetCurrency] = rate;
+  //   console.log("Rate inserted:");
+  //   console.log(currencyRates);
+  // };
+
+  // Add the new rate to the currencyRates array
+  currencyRates.push({
+    base: baseCurrency,
+    target: targetCurrency,
+    rate: rate,
+  });
   console.log("Rate inserted:");
   console.log(currencyRates);
+
+  // Render the updated rates grid
+  renderRatesGrid();
 };
 
 // Function to convert a currency (From and To)
