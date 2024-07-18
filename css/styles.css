@@ -66,3 +66,9 @@ button:hover {
   margin-top: 10px;
   font-weight: bold;
 }
+
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
