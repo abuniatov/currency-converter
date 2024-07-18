@@ -18,6 +18,21 @@ const findRate = (base, target) => {
   );
 };
 
+// Function to render the currency rates grid
+const renderRatesGrid = () => {
+  const ratesGrid = document.getElementById("ratesGrid");
+  ratesGrid.innerHTML = "";
+  currencyRates.forEach((rate) => {
+    const rateItem = document.createElement("div");
+    rateItem.className = "rate-item";
+    rateItem.innerHTML = `
+      <h3>${rate.base} to ${rate.target}</h3>
+      <p>Rate: ${rate.rate}</p>
+    `;
+    ratesGrid.appendChild(rateItem);
+  });
+};
+
 // Function to insert a new currency rate (Base and Target)
 const insertRate = (event) => {
   event.preventDefault();
