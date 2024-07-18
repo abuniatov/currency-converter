@@ -129,7 +129,7 @@ const convertCurrency = (event) => {
 //   }
 // };
 
-// Find the rate for conversion
+// Finding the rate for conversion
 const rate = findRate(fromCurrency, toCurrency);
 if (rate) {
   const convertedAmount = amount * rate.rate;
@@ -175,16 +175,33 @@ const updateRate = (event) => {
   }
 
   // Updating the currency rate
-  if (
-    currencyRates.rates[baseCurrency] &&
-    currencyRates.rates[baseCurrency][targetCurrency]
-  ) {
-    currencyRates.rates[baseCurrency][targetCurrency] = newRate;
-    console.log("Rate updated:");
-    console.log(currencyRates);
-  } else {
-    alert("Rate not found for the specified currencies.");
-  }
+//   if (
+//     currencyRates.rates[baseCurrency] &&
+//     currencyRates.rates[baseCurrency][targetCurrency]
+//   ) {
+//     currencyRates.rates[baseCurrency][targetCurrency] = newRate;
+//     console.log("Rate updated:");
+//     console.log(currencyRates);
+//   } else {
+//     alert("Rate not found for the specified currencies.");
+//   }
+// };
+
+//  Finding the existing rate
+const rateIndex = currencyRates.findIndex(
+  (rate) => rate.base === baseCurrency && rate.target === targetCurrency
+);
+
+if (rateIndex !== -1) {
+  currencyRates[rateIndex].rate = newRate;
+  console.log("Rate updated:");
+  console.log(currencyRates);
+
+// Rendering the updated rates grid
+renderRatesGrid();
+} else {
+  alert("Rate for the specified currencies not found.");
+}
 };
 
 document.getElementById("newRateForm").addEventListener("submit", insertRate);
