@@ -211,3 +211,6 @@ document
 document
   .getElementById("updateRateForm")
   .addEventListener("submit", updateRate);
+
+// Initial rendering of the rates grid
+renderRatesGrid();

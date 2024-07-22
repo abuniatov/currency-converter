@@ -71,6 +71,28 @@
           <button type="submit">Update Rate</button>
         </form>
       </div>
+      <!-- Form for searching currency rates -->
+      <div class="form-container">
+        <form id="searchForm">
+          <h2>Search Currency Rate</h2>
+          <label for="searchBaseCurrency">Base Currency:</label>
+          <input
+            type="text"
+            id="searchBaseCurrency"
+            name="searchBaseCurrency"
+          />
+          <label for="searchTargetCurrency">Target Currency:</label>
+          <input
+            type="text"
+            id="searchTargetCurrency"
+            name="searchTargetCurrency"
+          />
+          <button type="submit">Search Rate</button>
+        </form>
+      </div>
+        <!-- Display search results -->
+        <p id="searchResult"></p>
+      </div>
       <!-- Section to display currency rates -->
       <div class="form-container">
         <h2>Currency Rates</h2>
