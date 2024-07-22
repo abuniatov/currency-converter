@@ -78,7 +78,7 @@ const insertRate = (event) => {
   console.log(currencyRates);
 
   // Render the updated rates grid
-  renderRatesGrid();
+  renderRatesGrid("ratesGrid", currencyRates);
 };
 
 // Function to convert a currency (From and To)
@@ -203,6 +203,21 @@ renderRatesGrid();
   alert("Rate for the specified currencies not found.");
 }
 };
+
+// Function to search for a currency rate based on base and/or target currency
+const searchRate = (baseCurrency, targetCurrency) => {
+  let results = [];
+  if (baseCurrency && targetCurrency) {
+    results = currencyRates.filter(
+      (rate) => rate.base === baseCurrency && rate.target === targetCurrency
+    );
+  } else if (baseCurrency) {
+    results = currencyRates.filter((rate) => rate.base === baseCurrency);
+  } else if (targetCurrency) {
+    results = currencyRates.filter((rate) => rate.target === targetCurrency);
+  }
+  return results;
+}
 
 document.getElementById("newRateForm").addEventListener("submit", insertRate);
 document
