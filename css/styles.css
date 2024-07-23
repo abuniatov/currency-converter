@@ -62,7 +62,32 @@ button:hover {
   background-color: #218838;
 }
 
-#conversionResult {
+#conversionResult, #searchResult {
   margin-top: 10px;
   font-weight: bold;
+}
+
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.rate-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.rate-item h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.rate-item p {
+  margin: 5px 0 0;
+  color: #666;
 }
