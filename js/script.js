@@ -1,11 +1,28 @@
 "use strict";
 
-// Global object to store currency rates
-const currencyRates = {
-  timestamp: Date.now(),
-  base: "EUR",
-  date: new Date().toISOString().split("T")[0],
-  rates: {},
+// Global array to store currency rates
+const currencyRates = [];
+
+// Function to find a rate
+const findRate = (base, target) => {
+  return currencyRates.find(
+    (rate) => rate.base === base && rate.target === target
+  );
+};
+
+// Function to render the currency rates grid
+const renderRatesGrid = (gridId, rates) => {
+  const ratesGrid = document.getElementById(gridId);
+  ratesGrid.innerHTML = "";
+  rates.forEach((rate) => {
+    const rateItem = document.createElement("div");
+    rateItem.className = "rate-item";
+    rateItem.innerHTML = `
+      <h3>${rate.base} to ${rate.target}</h3>
+      <p>Rate: ${rate.rate}</p>
+    `;
+    ratesGrid.appendChild(rateItem);
+  });
 };
 
 // Function to insert a new currency rate (Base and Target)
@@ -25,15 +42,24 @@ const insertRate = (event) => {
     return;
   }
 
-  // Initialization of an object for baseCurrency if it does not exist
-  if (!currencyRates.rates[baseCurrency]) {
-    currencyRates.rates[baseCurrency] = {};
+  // Check if the rate already exists
+  const existingRate = findRate(baseCurrency, targetCurrency);
+  if (existingRate) {
+    alert("Rate already exists. Please use the update form to modify it.");
+    return;
   }
 
-  // Set the rate for the target currency within the base currency object
-  currencyRates.rates[baseCurrency][targetCurrency] = rate;
+  // Add the new rate to the currencyRates array
+  currencyRates.push({
+    base: baseCurrency,
+    target: targetCurrency,
+    rate: rate,
+  });
   console.log("Rate inserted:");
   console.log(currencyRates);
+
+  // Render the updated rates grid
+  renderRatesGrid("ratesGrid", currencyRates);
 };
 
 // Function to convert a currency (From and To)
@@ -55,13 +81,10 @@ const convertCurrency = (event) => {
     return;
   }
 
-  // Conversion
-  if (
-    currencyRates.rates[fromCurrency] &&
-    currencyRates.rates[fromCurrency][toCurrency]
-  ) {
-    const rate = currencyRates.rates[fromCurrency][toCurrency];
-    const convertedAmount = amount * rate;
+  // Find the rate for conversion
+  const rate = findRate(fromCurrency, toCurrency);
+  if (rate) {
+    const convertedAmount = amount * rate.rate;
     document.getElementById(
       "conversionResult"
     ).textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(
@@ -103,16 +126,57 @@ const updateRate = (event) => {
     return;
   }
 
-  // Updating the currency rate
-  if (
-    currencyRates.rates[baseCurrency] &&
-    currencyRates.rates[baseCurrency][targetCurrency]
-  ) {
-    currencyRates.rates[baseCurrency][targetCurrency] = newRate;
+  // Find the existing rate
+  const rateIndex = currencyRates.findIndex(
+    (rate) => rate.base === baseCurrency && rate.target === targetCurrency
+  );
+
+  if (rateIndex !== -1) {
+    currencyRates[rateIndex].rate = newRate;
     console.log("Rate updated:");
     console.log(currencyRates);
+
+    // Render the updated rates grid
+    renderRatesGrid("ratesGrid", currencyRates);
   } else {
     alert("Rate not found for the specified currencies.");
+  }
+};
+
+// Function to search for currency rates based on base and/or target currency
+const searchRate = (baseCurrency, targetCurrency) => {
+  let results = [];
+  if (baseCurrency && targetCurrency) {
+    results = currencyRates.filter(
+      (rate) => rate.base === baseCurrency && rate.target === targetCurrency
+    );
+  } else if (baseCurrency) {
+    results = currencyRates.filter((rate) => rate.base === baseCurrency);
+  } else if (targetCurrency) {
+    results = currencyRates.filter((rate) => rate.target === targetCurrency);
+  }
+  return results;
+};
+
+// Function to handle the search form submission
+const handleSearch = (event) => {
+  event.preventDefault();
+  const baseCurrency = document
+    .getElementById("searchBaseCurrency")
+    .value.toUpperCase()
+    .trim();
+  const targetCurrency = document
+    .getElementById("searchTargetCurrency")
+    .value.toUpperCase()
+    .trim();
+
+  const results = searchRate(baseCurrency, targetCurrency);
+  if (results.length > 0) {
+    document.getElementById("searchResult").innerHTML = results
+      .map((rate) => `${rate.base} to ${rate.target}: ${rate.rate}`)
+      .join("<br>");
+  } else {
+    document.getElementById("searchResult").textContent = "No rates found.";
   }
 };
 
@@ -123,3 +187,7 @@ document
 document
   .getElementById("updateRateForm")
   .addEventListener("submit", updateRate);
+document.getElementById("searchForm").addEventListener("submit", handleSearch);
+
+// Initial render of the rates grid
+renderRatesGrid("ratesGrid", currencyRates);
