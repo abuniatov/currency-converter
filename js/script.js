@@ -4,11 +4,11 @@
 const currencyRates = [];
 
 // Function to find a rate
-const findRate = (base, target) => {
-  return currencyRates.find(
-    (rate) => rate.base === base && rate.target === target
-  );
-};
+// const findRate = (base, target) => {
+//   return currencyRates.find(
+//     (rate) => rate.base === base && rate.target === target
+//   );
+// };
 
 // Function to render the currency rates grid
 const renderRatesGrid = (gridId, rates) => {
@@ -43,8 +43,8 @@ const insertRate = (event) => {
   }
 
   // Check if the rate already exists
-  const existingRate = findRate(baseCurrency, targetCurrency);
-  if (existingRate) {
+  const existingRates = searchRate(baseCurrency, targetCurrency);
+  if (existingRates.length > 0) {
     alert("Rate already exists. Please use the update form to modify it.");
     return;
   }
@@ -82,9 +82,10 @@ const convertCurrency = (event) => {
   }
 
   // Find the rate for conversion
-  const rate = findRate(fromCurrency, toCurrency);
-  if (rate) {
-    const convertedAmount = amount * rate.rate;
+  const rates = searchRate(fromCurrency, toCurrency);
+  if (rates.length > 0) {
+    const rate = rates[0].rate;
+    const convertedAmount = amount * rate;
     document.getElementById(
       "conversionResult"
     ).textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(
