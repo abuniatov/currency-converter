@@ -3,13 +3,6 @@
 // Global array to store currency rates
 const currencyRates = [];
 
-// Function to find a rate
-// const findRate = (base, target) => {
-//   return currencyRates.find(
-//     (rate) => rate.base === base && rate.target === target
-//   );
-// };
-
 // Function to render the currency rates grid
 const renderRatesGrid = (gridId, rates) => {
   const ratesGrid = document.getElementById(gridId);
@@ -179,6 +172,27 @@ const handleSearch = (event) => {
   } else {
     document.getElementById("searchResult").textContent = "No rates found.";
   }
+};
+
+// const calculateTimeDelay = (time) => {
+//   const now = new Date();
+//   const targetTime = new Date(time);
+//   const delay = targetTime - now;
+//   return delay;
+// };
+
+// Function to calculate time delay of a specific time
+const calculateDelay = (time) => {
+  const now = new Date();
+  const targetTime = new Date();
+
+  targetTime.setHours(time, 0, 0, 0);
+
+  if (now > targetTime) {
+    targetTime.setDate(now.getDate() + 1);
+  }
+
+  return targetTime - now;
 };
 
 document.getElementById("newRateForm").addEventListener("submit", insertRate);
