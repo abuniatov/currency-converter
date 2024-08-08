@@ -182,17 +182,56 @@ const handleSearch = (event) => {
 // };
 
 // Function to calculate time delay of a specific time
-const calculateDelay = (time) => {
+// const calculateDelay = (time) => {
+//   const now = new Date();
+//   const targetTime = new Date();
+
+//   targetTime.setHours(time, 0, 0, 0);
+
+//   if (now > targetTime) {
+//     targetTime.setDate(now.getDate() + 1);
+//   }
+
+//   return targetTime - now;
+// };
+
+// Function to set market opening and closing times
+// const setMarketTimes = () => {
+//   const marketOpeningTime = 9;
+//   const marketClosingTime = 17;
+
+//   const openingDelay = calculateDelay(marketOpeningTime);
+//   const closingDelay = calculateDelay(marketClosingTime);
+
+//   setTimeout(() => {
+//     document.getElementById("marketAnnouncement").textContent =
+//       "Market is open!";
+//   }, openingDelay);
+
+//   setTimeout(() => {
+//     document.getElementById("marketAnnouncement").textContent =
+//       "Market is closed!";
+//   }, closingDelay);
+// };
+
+// Function to show market announcement
+const showMarketAnnouncement = (message) => {
+  const marketAnnouncement = document.getElementById("marketAnnouncement");
+  marketAnnouncement.textContent = message;
+  console.log(message);
+};
+
+// Function to get the next occurance of a specific time
+const getNextOccurrence = (hour) => {
   const now = new Date();
   const targetTime = new Date();
-
   targetTime.setHours(time, 0, 0, 0);
 
-  if (now > targetTime) {
-    targetTime.setDate(now.getDate() + 1);
+  if (now >= nextOccurrence) {
+    nextOccurrence.setDate(now.getDate() + 1);
   }
 
-  return targetTime - now;
+  return nextOccurrence;
 };
 
 document.getElementById("newRateForm").addEventListener("submit", insertRate);
