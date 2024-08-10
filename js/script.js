@@ -244,6 +244,19 @@ const calculateRemainingTime = (targetTime) => {
   return { hours, minutes, seconds };
 };
 
+// Function to update the market status
+const updateMarketStatus = () => {
+  const now = new Date();
+  const currentHour = now.getHours();
+  const marketAnnouncement = document.getElementById("marketAnnouncement");
+
+  if (currentHour >= 9 && currentHour < 17) {
+    marketAnnouncement.textContent = "The market is now open!";
+  } else {
+    marketAnnouncement.textContent = "The market is now closed!";
+  }
+};
+
 // Function to update the countdown timer
 const updateCountdownTimer = () => {
   const countdownElement = document.getElementById("countdownTimer");
@@ -266,7 +279,8 @@ const updateCountdownTimer = () => {
 
   countdownElement.textContent = `${message} ${hours}h ${minutes}m ${seconds}s`;
 
-
+  updateMarketStatus();
+};
 
 // Function to set market announcement timers
 const setMarketAnnouncementTimers = () => {
