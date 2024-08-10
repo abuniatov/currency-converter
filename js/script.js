@@ -221,17 +221,60 @@ const showMarketAnnouncement = (message) => {
   console.log(message);
 };
 
-// Function to get the next occurance of a specific time
+// Function to get the next occurrence of a specific time
 const getNextOccurrence = (hour) => {
   const now = new Date();
-  const targetTime = new Date();
-  targetTime.setHours(time, 0, 0, 0);
+  const nextOccurrence = new Date();
+  nextOccurrence.setHours(hour, 0, 0, 0);
 
   if (now >= nextOccurrence) {
     nextOccurrence.setDate(now.getDate() + 1);
   }
 
   return nextOccurrence;
+};
+
+// Function to calculate the remaining time until the next occurrence
+const calculateRemainingTime = (targetTime) => {
+  const now = new Date();
+  const timeDifference = targetTime - now;
+  const hours = Math.floor((timeDifference % 86400000) / 3600000);
+  const minutes = Math.floor((timeDifference % 3600000) / 60000);
+  const seconds = Math.floor((timeDifference % 60000) / 1000);
+  return { hours, minutes, seconds };
+};
+
+// Function to update the countdown timer
+const updateCountdownTimer = () => {
+  const countdownElement = document.getElementById("countdownTimer");
+  const nextMarketOpen = getNextOccurrence(9);
+  const nextMarketClose = getNextOccurrence(17);
+  const now = new Date();
+
+  let targetTime;
+  let message;
+
+  if (now.getHours() >= 9 && now.getHours() < 17) {
+    targetTime = nextMarketClose;
+    message = "Time until market closes: ";
+  } else {
+    targetTime = nextMarketOpen;
+    message = "Time until market opens: ";
+  }
+
+  const { hours, minutes, seconds } = calculateRemainingTime(targetTime);
+
+  countdownElement.textContent = `${message} ${hours}h ${minutes}m ${seconds}s`;
+
+
+
+// Function to set market announcement timers
+const setMarketAnnouncementTimers = () => {
+  // Update the countdown timer immediately
+  updateCountdownTimer();
+
+  // Update the countdown timer every second
+  setInterval(updateCountdownTimer, 1000);
 };
 
 document.getElementById("newRateForm").addEventListener("submit", insertRate);
@@ -245,3 +288,6 @@ document.getElementById("searchForm").addEventListener("submit", handleSearch);
 
 // Initial render of the rates grid
 renderRatesGrid("ratesGrid", currencyRates);
+
+// Set market announcement timers
+setMarketAnnouncementTimers();
