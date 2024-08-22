@@ -1,22 +1,5 @@
 "use strict";
 
-// Function to fetch data from the API and initialize the application
-async function getData() {
-  try {
-    const response = await fetch(
-      "https://raw.githubusercontent.com/abuniatov/abuniatov.github.io/main/data/currency-rates.json"
-    );
-    const currencyRates = await response.json();
-
-    // Initialize the application with the fetched data
-    initializeApp(currencyRates);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-}
-
-// Function to initialize the application with the fetched data
-const initializeApp = (currencyRates) => {
   // Function to render the currency rates grid
   const renderRatesGrid = (gridId, rates) => {
     const ratesGrid = document.getElementById(gridId);
@@ -25,15 +8,15 @@ const initializeApp = (currencyRates) => {
       const rateItem = document.createElement("div");
       rateItem.className = "rate-item";
       rateItem.innerHTML = `
-      <h3>${rate.base} to ${rate.target}</h3>
-      <p>Rate: ${rate.rate}</p>
+      <h3>${rate.base || "N/A"} to ${rate.target || "N/A"}</h3>
+      <p>Rate: ${rate.rate || "N/A"}</p>
     `;
       ratesGrid.appendChild(rateItem);
     });
   };
 
   // Function to insert a new currency rate (Base and Target)
-  const insertRate = (event) => {
+  const insertRate = (event, currencyRates) => {
     event.preventDefault();
     const baseCurrency = document
       .getElementById("baseCurrency")
@@ -50,7 +33,7 @@ const initializeApp = (currencyRates) => {
     }
 
     // Check if the rate already exists
-    const existingRates = searchRate(baseCurrency, targetCurrency);
+    const existingRates = searchRate(currencyRates, baseCurrency, targetCurrency);
     if (existingRates.length > 0) {
       alert("Rate already exists. Please use the update form to modify it.");
       return;
@@ -70,7 +53,7 @@ const initializeApp = (currencyRates) => {
   };
 
   // Function to convert a currency (From and To)
-  const convertCurrency = (event) => {
+  const convertCurrency = (event, currencyRates) => {
     event.preventDefault();
     const amount = parseFloat(document.getElementById("amount").value.trim());
     const fromCurrency = document
@@ -89,7 +72,7 @@ const initializeApp = (currencyRates) => {
     }
 
     // Find the rate for conversion
-    const rates = searchRate(fromCurrency, toCurrency);
+    const rates = searchRate(currencyRates, fromCurrency, toCurrency);
     if (rates.length > 0) {
       const rate = rates[0].rate;
       const convertedAmount = amount * rate;
@@ -116,7 +99,7 @@ const initializeApp = (currencyRates) => {
   };
 
   // Function to update an existing currency rate
-  const updateRate = (event) => {
+  const updateRate = (event, currencyRates) => {
     event.preventDefault();
     const baseCurrency = document
       .getElementById("updateBaseCurrency")
@@ -152,22 +135,22 @@ const initializeApp = (currencyRates) => {
   };
 
   // Function to search for currency rates based on base and/or target currency
-  const searchRate = (baseCurrency, targetCurrency) => {
+  const searchRate = (ratesArray, baseCurrency, targetCurrency) => {
     let results = [];
     if (baseCurrency && targetCurrency) {
-      results = currencyRates.filter(
+      results = ratesArray.filter(
         (rate) => rate.base === baseCurrency && rate.target === targetCurrency
       );
     } else if (baseCurrency) {
-      results = currencyRates.filter((rate) => rate.base === baseCurrency);
+      results = ratesArray.filter((rate) => rate.base === baseCurrency);
     } else if (targetCurrency) {
-      results = currencyRates.filter((rate) => rate.target === targetCurrency);
+      results = ratesArray.filter((rate) => rate.target === targetCurrency);
     }
     return results;
   };
 
   // Function to handle the search form submission
-  const handleSearch = (event) => {
+  const handleSearch = (event, currencyRates) => {
     event.preventDefault();
     const baseCurrency = document
       .getElementById("searchBaseCurrency")
@@ -178,7 +161,7 @@ const initializeApp = (currencyRates) => {
       .value.toUpperCase()
       .trim();
 
-    const results = searchRate(baseCurrency, targetCurrency);
+    const results = searchRate(currencyRates, baseCurrency, targetCurrency);
     if (results.length > 0) {
       document.getElementById("searchResult").innerHTML = results
         .map((rate) => `${rate.base} to ${rate.target}: ${rate.rate}`)
@@ -265,23 +248,28 @@ const initializeApp = (currencyRates) => {
     setInterval(updateCountdownTimer, 1000);
   };
 
-  document.getElementById("newRateForm").addEventListener("submit", insertRate);
-  document
-    .getElementById("convertForm")
-    .addEventListener("submit", convertCurrency);
-  document
-    .getElementById("updateRateForm")
-    .addEventListener("submit", updateRate);
-  document
-    .getElementById("searchForm")
-    .addEventListener("submit", handleSearch);
+// Function to initialize the application with the fetched data
+const initializeApp = (currencyRates) => {
+  document.getElementById("newRateForm").addEventListener("submit", (event) => insertRate(event, currencyRates));
+  document.getElementById("convertForm").addEventListener("submit", (event) => convertCurrency(event, currencyRates));
+  document.getElementById("updateRateForm").addEventListener("submit", (event) => updateRate(event, currencyRates));
+  document.getElementById("searchForm").addEventListener("submit", (event) => handleSearch(event, currencyRates));
 
-  // Initial render of the rates grid
   renderRatesGrid("ratesGrid", currencyRates);
-
-  // Set market announcement timers
   setMarketAnnouncementTimers();
 };
+
+// Function to fetch data from the API and initialize the application
+async function getData() {
+  try {
+    const response = await fetch("https://raw.githubusercontent.com/abuniatov/abuniatov.github.io/main/data/currency-rates.json");
+    const currencyRates = await response.json();
+
+    initializeApp(currencyRates);
+  } catch (error) {
+    console.error("Error fetching currency rates data:", error);
+  }
+}
 
 // Call the getData function to fetch data and initialize the application
 getData();
